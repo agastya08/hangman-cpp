@@ -4,5 +4,5 @@ give a score to the user based on guesses consumed ✅
 show used letters ✅
 get a hint in exchange for a life (give limited lives) ✅
 coloured output (green for correct guess, red for incorrect guess
-                yellow for warning)
+                yellow for warning) ✅
 save scores in a text file

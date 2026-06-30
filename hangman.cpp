@@ -115,7 +115,7 @@ Instructions:
 
 void welcome_msg2(char spaces[], int len_of_word){
     std::cout << stages[0] << "\n\n";
-    std::cout << "WORD: ";
+    std::cout << "\033[36mWORD:\033[0m ";
     for(int i = 0; i < len_of_word; i++){
         std::cout << spaces[i] << " ";
     }
@@ -133,11 +133,11 @@ void check_guess(char guess, std::string word, char spaces[], int len_of_word, i
         }
     }
     if(!correct){
-        std::cout << "INCORRECT GUESS!\n";
+        std::cout << "\033[31mINCORRECT GUESS!\033[0m\n";
         incorrect_guesses += 1;
     }
     else{
-        std::cout << "CORRECT GUESS!\n";
+        std::cout << "\033[32mCORRECT GUESS!\033[0m\n";
         for(int i = 0; i < len_of_word; i++){
             bool exists = false;
             for(int index:indexes){
@@ -151,7 +151,18 @@ void check_guess(char guess, std::string word, char spaces[], int len_of_word, i
         }
     }
     std::cout << stages[incorrect_guesses] << "\n";
-    std::cout << 6-incorrect_guesses << " GUESSES LEFT!\n\n";
+
+    int lives = 6 - incorrect_guesses;
+
+    if(lives >= 4){
+        std::cout << "\033[32m" << lives << " GUESSES LEFT!\033[0m\n";
+    }    
+    else if(lives >= 2){
+        std::cout << "\033[33m" << lives << " GUESSES LEFT!\033[0m\n";
+    }    
+    else{
+        std::cout << "\033[31m" << lives << " GUESSES LEFT!\033[0m\n";
+    }
 
     std::cout << "LETTERS USED: \n";
 
@@ -160,7 +171,7 @@ void check_guess(char guess, std::string word, char spaces[], int len_of_word, i
     }
     std::cout << "\n\n";
 
-    std::cout << "WORD: ";
+    std::cout << "\033[36mWORD:\033[0m ";
     for(int i = 0; i < len_of_word; i++){
     std::cout << spaces[i] << " ";
     }
@@ -170,7 +181,7 @@ void check_guess(char guess, std::string word, char spaces[], int len_of_word, i
 int give_hint(std::string word, char spaces[], int len_of_word, int &incorrect_guesses, std::vector<char> already_guessed, int &no_of_hints){
     
     if(no_of_hints == 0){
-        std::cout << "You Have Used All Of Your Hints!\n";
+        std::cout << "\033[31mYou Have Used All Of Your Hints!\033[0m\n";
         return 1;
     }
     
@@ -185,7 +196,18 @@ int give_hint(std::string word, char spaces[], int len_of_word, int &incorrect_g
     no_of_hints -= 1;
 
     std::cout << stages[incorrect_guesses] << "\n";
-    std::cout << 6-incorrect_guesses << " GUESSES LEFT!\n\n";
+
+    int lives = 6 - incorrect_guesses;
+
+    if(lives >= 4){
+        std::cout << "\033[32m" << lives << " GUESSES LEFT!\033[0m\n";
+    }    
+    else if(lives >= 2){
+        std::cout << "\033[33m" << lives << " GUESSES LEFT!\033[0m\n";
+    }    
+    else{
+        std::cout << "\033[31m" << lives << " GUESSES LEFT!\033[0m\n";
+    }
 
     std::cout << "LETTERS USED: \n";
 
@@ -194,7 +216,7 @@ int give_hint(std::string word, char spaces[], int len_of_word, int &incorrect_g
     }
     std::cout << "\n\n";
 
-    std::cout << "WORD: ";
+    std::cout << "\033[36mWORD:\033[0m ";
     for(int i = 0; i < len_of_word; i++){
     std::cout << spaces[i] << " ";
     }
@@ -269,17 +291,17 @@ const std::string hard_wordlist[] = {
         std::string level;
     
         do{
-            std::cout << "Which difficulty level would you like to play?\n";
-            std::cout << "Easy(E) [3 Hints Available]\n";
-            std::cout << "Medium(M) [2 Hints Available]\n";
-            std::cout << "Hard(H) [1 Hint Available]\n";
+            std::cout << "\033[36mWhich difficulty level would you like to play?\033[0m\n";
+            std::cout << "\033[32mEasy(E) [3 Hints Available]\033[0m\n";
+            std::cout << "\033[33mMedium(M) [2 Hints Available]\033[0m\n";
+            std::cout << "\033[31mHard(H) [1 Hint Available]\033[0m\n";
             std::cin >> level;
 
             for(char &letter:level){
             letter = tolower(letter);
             }
             if(level != "e" && level != "m" && level != "h"){
-                std::cout << "Invalid Choice!\n";
+                std::cout << "\033[33mInvalid Choice!\033[0m\n";
             }
 
         }while(level != "e" && level != "m" && level != "h");    
@@ -328,7 +350,7 @@ const std::string hard_wordlist[] = {
 
         do{
             char guess;
-            std::cout << "GUESS A LETTER OR ENTER '?' FOR A HINT[" << no_of_hints << " left]: ";
+            std::cout << "\033[36mGUESS A LETTER OR ENTER '?' FOR A HINT[" << no_of_hints << " left]: \033[0m";
             std::cin >> guess;
             guess = std::tolower(guess);
 
@@ -337,7 +359,7 @@ const std::string hard_wordlist[] = {
             }
 
             else if(!std::isalpha(guess)){
-                std::cout << "INVALID GUESS!\n";
+                std::cout << "\033[33mINVALID GUESS!\033[0m\n";
                 continue;
             }
 
@@ -350,7 +372,7 @@ const std::string hard_wordlist[] = {
             }
 
             if(guessed){
-                std::cout << "YOU HAVE ALREADY GUESSED THAT LETTER!\n";
+                std::cout << "\033[33mYOU HAVE ALREADY GUESSED THAT LETTER!\033[0m\n";
                 continue;
             }
             else{
@@ -365,7 +387,7 @@ const std::string hard_wordlist[] = {
 
 
         if(incorrect_guesses == 6){
-            std::cout << "\nYOU LOST!\n";
+            std::cout << "\033[31m\nYOU LOST!\033[0m\n";
             std::cout << "THE WORD WAS: " << word << "\n\n";
             
             int unique_letters_found = 0;
@@ -400,23 +422,30 @@ const std::string hard_wordlist[] = {
             int score = adjusted * 100;
             
             total_score += score;
-            std::cout << "Score: " << score << "/100\n";
+
+            if(score >= 40){
+                std::cout << "\033[33mScore: " << score << "/100\033[0m\n";
+            }
+            else{
+                std::cout << "\033[31mScore: " << score << "/100\033[0m\n";
+            }
+            
             std::cout << "Your total score: " << total_score << "/" << 100*rounds << "\n\n";
         }
         else{
-            std::cout << "\nYOU WON!\n\n";
+            std::cout << "\033[32m\nYOU WON!\033[0m\n\n";
             int base_score = 100 - (10*incorrect_guesses);
             int bonus = max(0, min(len_of_word - 5, 10));
             int final_score = min(100, base_score+bonus);
             total_score += final_score;
-            std::cout << "Score: " << final_score << "/100\n";
+            std::cout << "\033[32mScore: " << final_score << "/100\033[0m\n";
             std::cout << "Your total score: " << total_score << "/" << 100*rounds << "\n\n";
         }
 
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         do{
-            std::cout << "Do you want to play again?(Y/N): ";
+            std::cout << "\033[36mDo you want to play again?(Y/N): \033[0m";
             std::getline(std::cin, play_again);
 
             for(char &letter:play_again){
@@ -424,7 +453,7 @@ const std::string hard_wordlist[] = {
             }
 
             if(play_again!="y" && play_again!="n"){
-                std::cout << "Enter Y or N only!\n";
+                std::cout << "\033[33mEnter Y or N only!\033[0m\n";
                 continue;
             }
 
