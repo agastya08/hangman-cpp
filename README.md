@@ -7,6 +7,7 @@ Hangman is a terminal-based word guessing game built in C++. The game randomly s
   - ASCII-art Hangman display
   - Hint system with limited hints per difficulty
   - Score tracking across multiple rounds
+  - High Score tracking system
   - Duplicate guess detection
   - Input validation
   - Play-again option
