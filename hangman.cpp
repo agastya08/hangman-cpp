@@ -4,6 +4,7 @@
 #include <cctype>
 #include <limits>
 #include <algorithm>
+#include <fstream>
 
 int min(int a, int b){
     if(a>=b){
@@ -155,13 +156,13 @@ void check_guess(char guess, std::string word, char spaces[], int len_of_word, i
     int lives = 6 - incorrect_guesses;
 
     if(lives >= 4){
-        std::cout << "\033[32m" << lives << " GUESSES LEFT!\033[0m\n";
+        std::cout << "\033[32m" << lives << " LIVES LEFT!\033[0m\n";
     }    
     else if(lives >= 2){
-        std::cout << "\033[33m" << lives << " GUESSES LEFT!\033[0m\n";
+        std::cout << "\033[33m" << lives << " LIVES LEFT!\033[0m\n";
     }    
     else{
-        std::cout << "\033[31m" << lives << " GUESSES LEFT!\033[0m\n";
+        std::cout << "\033[31m" << lives << " LIVES LEFT!\033[0m\n";
     }
 
     std::cout << "LETTERS USED: \n";
@@ -200,13 +201,13 @@ int give_hint(std::string word, char spaces[], int len_of_word, int &incorrect_g
     int lives = 6 - incorrect_guesses;
 
     if(lives >= 4){
-        std::cout << "\033[32m" << lives << " GUESSES LEFT!\033[0m\n";
+        std::cout << "\033[32m" << lives << " LIVES LEFT!\033[0m\n";
     }    
     else if(lives >= 2){
-        std::cout << "\033[33m" << lives << " GUESSES LEFT!\033[0m\n";
+        std::cout << "\033[33m" << lives << " LIVES LEFT!\033[0m\n";
     }    
     else{
-        std::cout << "\033[31m" << lives << " GUESSES LEFT!\033[0m\n";
+        std::cout << "\033[31m" << lives << " LIVES LEFT!\033[0m\n";
     }
 
     std::cout << "LETTERS USED: \n";
@@ -233,6 +234,30 @@ bool word_complete(char spaces[], int len_of_word){
         }
     }
     return true;
+}
+
+bool check_high_score(int score){
+    int high_score;
+
+    std::ifstream high_score_reader("high_score.txt");
+
+    high_score_reader >> high_score;
+
+    high_score_reader.close();
+
+    if(score > high_score){
+
+        std::ofstream high_score_writer("high_score.txt");
+
+        high_score_writer << score;
+
+        high_score_writer.close();
+
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 int main(){
@@ -301,7 +326,7 @@ const std::string hard_wordlist[] = {
             letter = tolower(letter);
             }
             if(level != "e" && level != "m" && level != "h"){
-                std::cout << "\033[33mInvalid Choice!\033[0m\n";
+                std::cout << "\033[33m\nInvalid Choice!\033[0m\n";
             }
 
         }while(level != "e" && level != "m" && level != "h");    
@@ -430,7 +455,12 @@ const std::string hard_wordlist[] = {
                 std::cout << "\033[31mScore: " << score << "/100\033[0m\n";
             }
             
-            std::cout << "Your total score: " << total_score << "/" << 100*rounds << "\n\n";
+            std::cout << "Your total score: " << total_score << "/" << 100*rounds << "\n";
+
+            if(check_high_score(total_score)){
+                std::cout << "\033[32mNEW HIGH SCORE!\033[0m\n";
+            }
+
         }
         else{
             std::cout << "\033[32m\nYOU WON!\033[0m\n\n";
@@ -439,7 +469,11 @@ const std::string hard_wordlist[] = {
             int final_score = min(100, base_score+bonus);
             total_score += final_score;
             std::cout << "\033[32mScore: " << final_score << "/100\033[0m\n";
-            std::cout << "Your total score: " << total_score << "/" << 100*rounds << "\n\n";
+            std::cout << "Your total score: " << total_score << "/" << 100*rounds << "\n";
+
+            if(check_high_score(total_score)){
+                std::cout << "\033[32mNEW HIGH SCORE!\033[0m\n";
+            }
         }
 
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -458,6 +492,7 @@ const std::string hard_wordlist[] = {
             }
 
         }while(play_again!="y" && play_again!="n");
+
 
     }while(play_again!="n");
     

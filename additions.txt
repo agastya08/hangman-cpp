@@ -5,4 +5,7 @@ show used letters ✅
 get a hint in exchange for a life (give limited lives) ✅
 coloured output (green for correct guess, red for incorrect guess
                 yellow for warning) ✅
-save scores in a text file
+
+__ guesses left --> __ lives left ✅
+
+save high score in a text file ✅
